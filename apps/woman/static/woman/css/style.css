@@ -1,0 +1,33 @@
+*{
+    margin:0px;
+    padding:0px;
+    font-family: sans-serif;
+}
+.main{
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+    width: 775px;
+}
+.lrg{
+    color: rgb(194, 161, 255);
+}
+.apple{
+    color:white;
+    text-align: center;
+    text-decoration: none;
+}
+.profile{
+    min-height: 250px;
+    width:250px;
+}
+.linkcolor{
+    text-decoration: none;
+    color: rgb(194, 161, 255);
+}
+.flag{
+    font-size: 25px;
+    color:rgb(194, 161, 255);
+}
+.spalsh{
+    text-align: center;
+}

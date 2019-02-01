@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {%load static%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="{%static 'woman/css/style.css'%}">
+    <title>Join Woman Up</title>
+</head>
+
+<body>
+        <img src="{% static 'woman/img/femme-nav-mage.png' %}" alt="femme">
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">
+            <img src="{% static 'woman/img/woman-up-logo.png' %}" width="100" height="40" alt="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <!-- this displays the messages on the page when an error occurs -->
+        {% if messages %}
+        <div id='messages'>
+            <ul class="flag">
+                {% for message in messages %}
+                <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="form-group col">
+                <br>
+                <h1>Registration</h1>
+                <form class="register" action='register' method='post'>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for='first_name'>First Name</label>
+                        <input type="text" class="form-control" name="first_name">
+                    </div>
+                    <div class="form-group">
+                        <label for='last_name'>Last Name</label>
+                        <input type="text" class="form-control" name="last_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" name="email" class="form-control">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                            else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label label for='pwconf'>Password</label>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1"> Confirm Password</label>
+                        <input type="password" name="pwconf" class="form-control">
+                    </div>
+                    <button type="submit" name="register" class="btn btn-secondary">Register</button>
+                </form>
+            </div>
+
+            <div class="form-group login col">
+                <br>
+                <h1>Login</h1>
+                <form action='login' method='post'>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for='login_email'>Email address</label>
+                        <input type="text" name="login_email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for='login_password'>Password</label>
+                        <input type="password" name="login_password" class="form-control">
+                    </div>
+                    <button type="submit" name="login" class="btn btn-secondary">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--container ends-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

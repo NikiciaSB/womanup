@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {%load static%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="{%static 'woman/css/style.css'%}">
+    <title>Groups</title>
+</head>
+
+<body>
+        <img src="{% static 'woman/img/femme-nav-mage.png' %}" alt="femme">
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">
+            <img src="{% static 'woman/img/woman-up-logo.png' %}" width="100" height="40" alt="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/groups">Groups</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/{{user.id}}">My Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    {% if messages %}
+    <div id='messages'>
+        <ul class>
+            {% for message in messages %}
+            <li class="flag">{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <div class="container">
+        <br>
+        <h1>Welcome to the group {{group.group_title}}, {{user.first_name}}.</h1>
+        <!-- <div class="row"> -->
+            <br>
+        <div class="col-sm">
+            <h4>{{group.group_title}}</h4>
+            <p>{{group.group_desc}}</p>
+            <p>Created by <a class="linkcolor" href="user/{{group.created_by.id}}">{{group.created_by.first_name }}</a></p>
+            <p>{{group.likes.all.count}} people love this </p>
+            {% if group.created_by.id == request.session.logged_in %}
+            <a class="linkcolor" href="edit_group/{{group.id}}">Edit Group</a> ||
+            <a class="linkcolor" href="delete/{{group.id}}">Delete</a>
+            <hr class="my-4">
+            {% endif %}
+
+        </div>
+
+        <div class="col">
+            <br>
+            <div class="jumbotron">
+                <h2 class="linkcolor">Latest Post:</h2><h2>{{post_new_title}}</h2>
+                <hr class="my-4">
+                <p class="lead">{{post_new_post}}</p>
+            </div>
+        </div>
+        <div class="col-sm">
+            <form action="{{group.id}}/add_post" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="post_title" class="form-control" placeholder="Post Title">
+                    <textarea name="post" id="post" cols="133" rows="7" placeholder="Post a message"></textarea>
+                    <input type="hidden" name="id" value="{{user.id}}">
+                    <button class="linkcolor btn btn-secondary" type="submit" value="Post Message">Post Message</button>
+                </div>
+            </form>
+            <br>
+        </div>
+        <br><br>
+        <div class="col-sm">
+            <hr class="my-4">
+            {% if post_data %}
+            {% for post in post_data %}
+            <fieldset>
+                <h5>{{ post.post_title }}</h5>
+                <p>{{post.post}}</p>
+                <h6><a class="linkcolor" href="user/{{post.added_by.id}}">{{ post.added_by.first_name}}</a>| {{ post.created_at }}</h6>
+                <p>{{post.liked_by.all.count}} people love this </p>
+                <a class="linkcolor btn btn-secondary" href="/post_likes/{{post.id}}">Loves!</a>
+                {% if post.added_by_id == request.session.logged_in or group.created_by.id == request.session.logged_in  %}
+                <a class="linkcolor" href="edit_post/{{post.id}}">Edit Post</a> ||
+                <a class="linkcolor" href="delete_post/{{post.id}}">Delete</a>
+                {% endif %}
+                {% if comment_data %}
+                {% for comment in comment_data %}
+                <ul>
+                    {% if comment.post_id == post.id %}
+                    <br>
+                    <li class="comments">{{comment.comment}}--<a class="linkcolor" href="user/{{comment.user.id}}">{{comment.user.first_name}}</a> -- {{ comment.created_at}}</li>
+                    {% if comment.user.id == request.session.logged_in or group.created_by.id == request.session.logged_in  %}
+                    <a class="linkcolor" href="delete_comment/{{comment.id}}">Delete</a>
+                    {% endif %}
+                    {% endif %}
+                </ul>
+                {% endfor %}
+                {% endif %}
+                <hr class="my-4">
+
+                <form action="/comment/{{post.id}}" method='POST'>
+                    {% csrf_token %}
+                    <p>Post a comment</p>
+                    <input type="hidden" value={{group.id}} name="message_ID">
+                    <textarea name="comment" id="comment" cols="100" rows="2"></textarea><br>
+                    <button type="submit" class="linkcolor btn btn-secondary">Post Comment</button>
+                    <hr class="my-4">
+
+                </form>
+            </fieldset>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

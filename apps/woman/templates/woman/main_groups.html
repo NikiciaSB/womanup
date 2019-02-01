@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {%load static%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="{%static 'woman/css/style.css'%}">
+    <title>Groups</title>
+</head>
+
+<body>
+        <img src="{% static 'woman/img/femme-nav-mage.png' %}" alt="femme">
+    <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">
+            <img src="{% static 'woman/img/woman-up-logo.png' %}" width="100" height="40" alt="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="groups">Groups</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="user/{{user.id}}">My Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <br>
+                <h1>Welcome {{user.first_name}}</h1>
+                {{group_new}}
+                <br>
+                <div class="jumbotron">
+                    <h2 class="linkcolor">Latest Group:</h2><h2>{{group_new_title}}</h2>
+                    <hr class="my-4">
+                    <p class="lead">{{group_new_desc}}</p>
+                    <a class="linkcolor btn btn-secondary" href="/group/{{group_new_id}}" role="button">Check It Out!</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <h1>Groups</h1>
+                <a class="linkcolor btn btn-secondary" href="/add_group">Create A Group</a>
+                <br>
+                {% if group_data %}
+                {% for groups in group_data %}
+                <br>
+                <h4><a class="linkcolor" href="/group/{{groups.id}}">{{groups.group_title}}</a></h4>
+                <p>{{groups.group_desc}}</p>
+                <p>Created by <a class="linkcolor" href="user/{{groups.created_by.id}}">{{ groups.created_by.first_name }}</a></p>
+                <p>{{groups.likes.all.count}} people love this </p>
+                <a class="linkcolor btn btn-secondary" href="/group_likes/{{groups.id}}">Give Loves!</a>
+                {% if quotes.added_by.id == request.session.logged_in %}
+                <a href="delete/{{posts.id}}">Delete</a>
+                {% endif %}
+                <hr class="my-4">
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
